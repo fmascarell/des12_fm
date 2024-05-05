@@ -7,6 +7,7 @@ import carts from './routers/carts.js';
 import views from './routers/views.js';
 import __dirname from "./utils.js";
 import ProductManager from "./productManager.js";
+import { dbConnection } from "./database/config.js";
 
 const app = express();
 const PORT = 8080;
@@ -27,6 +28,8 @@ app.set('view engine','handlebars');
 app.use('/', views);
 app.use('./api/products', products);
 app.use('./api/carts', carts);
+
+await dbConnection();
 
 const expServer = app.listen(PORT, () => {console.log(`App run in port ${PORT}`);});
 const sockServer = new Server(expServer);
