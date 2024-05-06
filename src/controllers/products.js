@@ -3,8 +3,12 @@ import { productModel } from '../models/products.js';
 
 export const getProduct = async (req=request, res=response) => {
     try{
-        const productos = await productModel.find();
-        return res.json({ productos});
+        const { limit } = req.query;
+        //const productos = await productModel.find().limit(Number(limit));
+        //const total = await productModel.countDocuments();
+        const [productos, total] = await Promise.all([productModel.find().limit(Number(limit)), productModel.countDocuments()]);
+        //hace lo mismo que lo que está comentado, pero es mas rápido
+        return res.json({ total, productos});
     }
     catch(error){
         console.log('getProduct -> ', error);
@@ -28,7 +32,8 @@ export const getProductById = async (req=request, res=response) => {
 
 export const addProduct = async (req=request, res=response) => {
     try{
-        const {title, description, price, thumbnails, code, stock, category, status} = req.params;
+        const {title, description, price, thumbnails, code, stock, category, status} = req.body;
+        console.log(req.params);
         if (!title, !description, !code, !price, !stock, !category)
             return res.status(404).json({msg: 'Los campos [title, description, price, code, stock, category] son obligatorios'});
 

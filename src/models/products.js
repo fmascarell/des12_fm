@@ -13,4 +13,11 @@ const ProductoSchema = new Schema({
     thumbnails: [{type: String}],
 });
 
+ProductoSchema.set('toJSON', {
+    transform: function(doc, ret){
+        delete ret.__v;
+        return ret;
+    }
+});
+
 export const productModel = model(nameCollection, ProductoSchema);
