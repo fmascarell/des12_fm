@@ -7,6 +7,7 @@ import carts from './routers/carts.js';
 import views from './routers/views.js';
 import __dirname from "./utils.js";
 import { dbConnection } from "./database/config.js";
+import { productModel } from "./models/products.js";
 
 const app = express();
 const PORT = 8080;
@@ -30,19 +31,18 @@ app.use('./api/carts', carts);
 await dbConnection();
 
 const expServer = app.listen(PORT, () => {console.log(`App run in port ${PORT}`);});
-const sockServer = new Server(expServer);
+const io = new Server(expServer);
 
-sockServer.on('connection', socket => {
-  console.log('Client connected from the front');
-  const productos = prod.getProduct();
+io.on('connection', async (socket) => {
+
+  const productos = await productModel.find();
   socket.emit('productos', productos);
-  //console.log(productos);
 
-  socket.on('addProduct', product =>{
-    const result = prod.addProduct({...product});
-    console.log({result});
-    if (result.product)
-      socket.emit('productos', result.product);
+  socket.on('addProduct', producto =>{
+    const newProduct = productModel.create({...producto});
+    if (newProduct)
+      productos.push(newProduct);
+      socket.emit('productos', productos);
   })
 });
 
