@@ -11,7 +11,7 @@ const CartSchema = new Schema({
             },
             quantity:{
                 type:Number,
-                required:[true, 'La cantidad del prodcuto es obligatoria']
+                required:[true, 'La cantidad del producto es requerida']
             }
         }
     ],

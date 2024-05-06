@@ -6,12 +6,10 @@ import products from './routers/products.js';
 import carts from './routers/carts.js';
 import views from './routers/views.js';
 import __dirname from "./utils.js";
-import ProductManager from "./productManager.js";
 import { dbConnection } from "./database/config.js";
 
 const app = express();
 const PORT = 8080;
-const prod = new ProductManager();
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
