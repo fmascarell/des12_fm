@@ -3,7 +3,6 @@ import { productModel } from '../models/products.js';
 
 export const getProduct = async (req=request, res=response) => {
     try{
-        //const {limit} = req.query;
         const productos = await productModel.find();
         return res.json({ productos});
     }
