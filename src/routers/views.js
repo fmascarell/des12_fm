@@ -3,9 +3,8 @@ import { productModel } from '../models/products.js';
 const router = Router();
 
 router.get('/', async (req,res)=>{
-    const productos = productModel.find();
+    const productos = await productModel.find().lean();
     return res.render('home',{productos, styles: 'styles.css'});
-    //return res.render('home',{productos});
 });
 
 router.get('/realtimeproducts',(req,res)=>{

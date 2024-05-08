@@ -35,7 +35,7 @@ export const addProductInCart = async (req=request, res=response) => {
         if (!carrito)
             return res.status(404).json({msg: `El carrito id ${cid} no existe`});
 
-        const productInCart = carrito.products.find(p = p.id.toString() === pid);
+        const productInCart = carrito.products.find(p => p.id.toString() === pid);
 
         if (productInCart)
             productInCart.quantity++;
