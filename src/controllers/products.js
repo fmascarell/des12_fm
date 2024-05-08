@@ -1,5 +1,5 @@
 import {request,response} from 'express';
-import { productModel } from '../models/products.js';
+import { productModel } from '../dao/models/products.js';
 
 export const getProduct = async (req=request, res=response) => {
     try{

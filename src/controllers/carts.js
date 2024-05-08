@@ -1,5 +1,5 @@
 import {request,response} from 'express';
-import { cartModel } from '../models/carts.js';
+import { cartModel } from '../dao/models/carts.js';
 
 export const getCartById = async (req=request, res=response) => {
     try{
