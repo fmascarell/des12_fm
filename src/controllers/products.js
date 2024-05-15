@@ -3,12 +3,23 @@ import { productModel } from '../dao/models/products.js';
 
 export const getProduct = async (req=request, res=response) => {
     try{
-        const { limit } = req.query;
-        //const productos = await productModel.find().limit(Number(limit));
-        //const total = await productModel.countDocuments();
-        const [productos, total] = await Promise.all([productModel.find().limit(Number(limit)), productModel.countDocuments()]);
-        //hace lo mismo que lo que está comentado, pero es mas rápido
+        let { limit = 2, page = 1 } = req.query;
+        page = page == 0 ? 1 : page;
+        const queryProducts = productModel.find().limit(Number(limit));
+        const [productos, total] = await Promise.all([queryProducts, productModel.countDocuments()]);
         return res.json({ total, productos});
+
+        const a = {
+            status: 'success/error',
+            payload: [],
+            totalPages: 0,
+            prevPage: 1,
+            nextPage: 3,
+            hastPrePage: true,
+            hastNextPage: false,
+            prevLink: '',
+            nextLink: '',
+        }
     }
     catch(error){
         console.log('getProduct -> ', error);
