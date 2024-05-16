@@ -1,5 +1,5 @@
 import {request,response} from 'express';
-import { addProductInCartService, getCartByIdService, setCartService } from '../services/carts.js';
+import { addProductInCartService, deleteCartService, deleteProductsInCartService, getCartByIdService, setCartService, updateProductsInCartService } from '../services/carts.js';
 
 export const getCartById = async (req=request, res=response) => {
     try{
@@ -39,3 +39,51 @@ export const addProductInCart = async (req=request, res=response) => {
         return res.status(500).json({msg:'Se ha producido un error, comuniquese con su administrador'});
     }
 }
+
+export const deleteProductsInCart = async (req=request, res=response) => {
+    try {
+        const {cid, pid} = req.params;
+        const carrito = await deleteProductsInCartService(cid, pid);
+        if (!carrito)
+            return res.status(404).json({msg: 'No se pudo ejecutar la acción'});
+        return res.json({msg: 'Producto eliminado', carrito});
+    } catch (error) {
+        console.log('deleteProductsInCart -> ', error);
+        return res.status(500).json({msg:'Se ha producido un error, comuniquese con su administrador'});
+    }
+}
+
+export const updateProductsInCart = async (req=request, res=response) => {
+    try {
+        const {cid, pid} = req.params;
+        const {quantity} = req.body;
+
+        if (!quantity || !Number.isInteger(quantity))
+            return res.status(404).json({msg: 'El valor ingresado para quantity no corresponde'});
+
+        const carrito = await updateProductsInCartService(cid, pid, quantity);
+
+        if (!carrito)
+            return res.status(404).json({msg: 'No se pudo ejecutar la acción'});
+        return res.json({msg: 'Producto actualizado', carrito});
+    } catch (error) {
+        console.log('updateProductsInCart -> ', error);
+        return res.status(500).json({msg:'Se ha producido un error, comuniquese con su administrador'});
+    }
+}
+
+export const deleteCart = async (req=request, res=response) => {
+    try {
+        const {cid} = req.params;
+
+        const carrito = await deleteCartService(cid);
+
+        if (!carrito)
+            return res.status(404).json({msg: 'No se pudo ejecutar la acción'});
+        return res.json({msg: 'Producto actualizado', carrito});
+    } catch (error) {
+        console.log('deleteCart -> ', error);
+        return res.status(500).json({msg:'Se ha producido un error, comuniquese con su administrador'});
+    }
+}
+//
