@@ -1,43 +1,13 @@
 import {request,response} from 'express';
 import { productModel } from '../dao/models/products.js';
+import { getProductService } from '../services/products.js';
 
 export const getProduct = async (req=request, res=response) => {
     try{
-        let { limit = 2, page = 1, sort } = req.query;
-        page = page == 0 ? 1 : page;
-        page = Number(page);
-        const skip = (page -1) * Number(limit);
-        const sortOrderOptions = { 'asc': -1, 'desc': 1 };
-        sort = sortOrderOptions[sort] || null;
-
-        const queryProducts = productModel.find().limit(Number(limit)).skip(skip);
-        if (sort !== null)
-            queryProducts.sort({price: sort});
-
-        const [productos, totalDocs] = await Promise.all([queryProducts, productModel.countDocuments()]);
-
-        const totalPages = Math.ceil(totalDocs/Number(limit));
-        const hastNextPage = page < totalPages;
-        const hastPrevPage = page > 1;
-        const prevPage = hastPrevPage ? page -1 : null;
-        const nextPage = hastNextPage ? page +1 : null;
-
-
-        const result = {
-            totalDocs,
-            totalPages,
-            limit,
-            hastNextPage,
-            hastPrevPage,
-            prevPage,
-            nextPage,
-            payload: productos,
-        }
-
+        const result = await getProductService({...req.query});
         return res.json({result});
     }
     catch(error){
-        console.log('getProduct -> ', error);
         return res.status(500).json({msg:'Se ha producido un error, comuniquese con su administrador'});
     }
 }
