@@ -1,10 +1,8 @@
 import { Router } from 'express';
-//import { productModel } from '../dao/models/products.js';
 import { getProductService } from '../services/products.js';
 const router = Router();
 
 router.get('/', async (req,res)=>{
-    //const productos = await productModel.find().lean();
     const {payload} = await getProductService();
     return res.render('home',{productos: payload, styles:'styles.css', title:'Home'});
 });
