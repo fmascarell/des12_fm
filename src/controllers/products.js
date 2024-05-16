@@ -3,23 +3,38 @@ import { productModel } from '../dao/models/products.js';
 
 export const getProduct = async (req=request, res=response) => {
     try{
-        let { limit = 2, page = 1 } = req.query;
+        let { limit = 2, page = 1, sort } = req.query;
         page = page == 0 ? 1 : page;
-        const queryProducts = productModel.find().limit(Number(limit));
-        const [productos, total] = await Promise.all([queryProducts, productModel.countDocuments()]);
-        return res.json({ total, productos});
+        page = Number(page);
+        const skip = (page -1) * Number(limit);
+        const sortOrderOptions = { 'asc': -1, 'desc': 1 };
+        sort = sortOrderOptions[sort] || null;
 
-        const a = {
-            status: 'success/error',
-            payload: [],
-            totalPages: 0,
-            prevPage: 1,
-            nextPage: 3,
-            hastPrePage: true,
-            hastNextPage: false,
-            prevLink: '',
-            nextLink: '',
+        const queryProducts = productModel.find().limit(Number(limit)).skip(skip);
+        if (sort !== null)
+            queryProducts.sort({price: sort});
+
+        const [productos, totalDocs] = await Promise.all([queryProducts, productModel.countDocuments()]);
+
+        const totalPages = Math.ceil(totalDocs/Number(limit));
+        const hastNextPage = page < totalPages;
+        const hastPrevPage = page > 1;
+        const prevPage = hastPrevPage ? page -1 : null;
+        const nextPage = hastNextPage ? page +1 : null;
+
+
+        const result = {
+            totalDocs,
+            totalPages,
+            limit,
+            hastNextPage,
+            hastPrevPage,
+            prevPage,
+            nextPage,
+            payload: productos,
         }
+
+        return res.json({result});
     }
     catch(error){
         console.log('getProduct -> ', error);
