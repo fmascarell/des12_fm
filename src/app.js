@@ -8,8 +8,8 @@ import carts from './routers/carts.js';
 import views from './routers/views.js';
 import __dirname from "./utils.js";
 import { dbConnection } from "./database/config.js";
-import { productModel } from "./dao/models/products.js";
 import { messageModel } from "./dao/models/messages.js";
+import { addProductService, getProductService } from "./services/products.js";
 
 const app = express();
 const PORT = process.env.PORT;
@@ -37,11 +37,14 @@ const io = new Server(expServer);
 
 io.on('connection', async (socket) => {
   //productos
-  const productos = await productModel.find();
-  socket.emit('productos', productos);
+  //const productos = await productModel.find();
+  const {payload} = await getProductService({});
+  const productos = payload;
+  socket.emit('productos', payload);
 
   socket.on('addProduct', async (producto) =>{
-    const newProduct = await productModel.create({...producto});
+    //const newProduct = await productModel.create({...producto});
+    const newProduct = await addProductService({...producto});
     if (newProduct)
       productos.push(newProduct);
       socket.emit('productos', productos);
