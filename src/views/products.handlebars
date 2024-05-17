@@ -1,10 +1,9 @@
 <div>
-    <h1>Productos</h1>
-    <h3>Lista:</h3>
+    <h3>Lista de productos: </h3>
+
     <table>
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Título</th>
                 <th>Descripción</th>
                 <th>Precio</th>
@@ -13,12 +12,12 @@
                 <th>Categoría</th>
                 <th>Estado</th>
                 <th>Imágen</th>
+                <th>Agregar</th>
             </tr>
         </thead>
         <tbody>
-            {{#each productos}}
+            {{#each result.payload}}
             <tr>
-                <td>{{this._id}}</td>
                 <td>{{this.title}}</td>
                 <td>{{this.description}}</td>
                 <td>{{this.price}}</td>
@@ -33,14 +32,38 @@
                     {{/if}}
                 </td>
                 <td>
-                    {{#if this.thumbnails.lenght}}
+                    {{#if this.thumbnails.length}}
                     <a href="{{this.thumbnails.[0]}}" target="_blank">{{this.thumbnails.[0]}}</a>
                     {{else}}
                     Imagen no disponible
                     {{/if}}
                 </td>
+                <td>
+                    <button class="cart-button" onclick="addToCart('{{this._id}}')">
+                        <i class="fas fa-shopping-cart cart-icon"></i>
+                    </button>
+                </td>
             </tr>
             {{/each}}
         </tbody>
     </table>
+
+    <div class="pagination">
+        <span>Límite por página: {{result.limit}}</span><br>
+
+        {{#if result.query}}
+        <span>Filtrado por: {{result.query}}</span><br>
+        {{/if}}
+
+        {{#if result.hastPrevPage}}
+        <a href="?page={{result.prevPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">Página anterior</a>
+        {{/if}}
+
+        <span>Página {{result.page}} de {{result.totalPages}}</span>
+
+        {{#if result.hastNextPage}}
+        <a href="?page={{result.nextPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">Página siguiente</a>
+        {{/if}}
+    </div>
+    
 </div>
