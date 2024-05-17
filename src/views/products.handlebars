@@ -55,15 +55,40 @@
         <span>Filtrado por: {{result.query}}</span><br>
         {{/if}}
 
-        {{#if result.hastPrevPage}}
+        {{#if result.hasPrevPage}}
         <a href="?page={{result.prevPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">Página anterior</a>
         {{/if}}
 
         <span>Página {{result.page}} de {{result.totalPages}}</span>
 
-        {{#if result.hastNextPage}}
+        {{#if result.hasNextPage}}
         <a href="?page={{result.nextPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">Página siguiente</a>
         {{/if}}
     </div>
+
+    <!--<div>
+        <i class="fas fa-shopping-cart cart-icon"></i>
+        <span id="cart-count">Tu carrito: 0 productos</span>
+    </div>-->
+
+    <script>
+        function addToCart(productId){
+            console.log({productId})
+            const idCart = '66458efc1d1ae0caa339a574';
+            fetch(`/api/carts/${idCart}/product/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.log('Error ', error)
+            })
+        }
+    </script>
     
 </div>

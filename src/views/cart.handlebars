@@ -1,0 +1,49 @@
+<head>
+    <style>
+        /* public/css/cart.css */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+        
+        div {
+            margin: 20px auto;
+            padding: 10px;
+            max-width: 600px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h3 {
+            margin: 0;
+            padding: 10px 0;
+        }
+        
+        p {
+            margin: 0;
+            padding: 5px 0;
+        }
+
+    </style>
+</head>
+<div>
+    <h3>Lista de productos del carrito:</h3>
+
+    {{#each carrito.products}}
+    <div>
+        <h4>Nombre del producto: {{this.id.title}}</h4>
+        <p>Descripción: {{this.id.description}}</p>
+        <p>Precio: {{this.id.price}}</p>
+        <p>Cantidad: {{this.quantity}}</p>
+    </div>
+    {{/each}}
+</div>

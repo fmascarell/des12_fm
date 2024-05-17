@@ -2,7 +2,7 @@ import { cartModel } from "../dao/models/carts.js";
 
 export const getCartByIdService = async (cid) => {
     try{
-        return await cartModel.findById(cid).populate('products.id');
+        return await cartModel.findById(cid).populate('products.id').lean();
     } catch(error){
         console.log('getCartByIdService -> ', error);
         throw error;
