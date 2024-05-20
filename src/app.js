@@ -34,10 +34,6 @@ app.engine('handlebars', engine());
 app.set('views', __dirname + '/views');
 app.set('view engine','handlebars');
 
-//app.get('/',(req,res)=>{
-//  return res.render('home');
-//})
-
 app.use('/', views);
 app.use('/api/products', products);
 app.use('/api/carts', carts);
@@ -49,14 +45,12 @@ const io = new Server(expServer);
 
 io.on('connection', async (socket) => {
   //productos
-  //const productos = await productModel.find();
   const limit = 50;
   const {payload} = await getProductService({limit});
   const productos = payload;
   socket.emit('productos', payload);
 
   socket.on('addProduct', async (producto) =>{
-    //const newProduct = await productModel.create({...producto});
     const newProduct = await addProductService({...producto});
     if (newProduct)
       productos.push(newProduct);
