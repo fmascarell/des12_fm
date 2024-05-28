@@ -76,13 +76,13 @@ io.on('connection', async (socket) => {
 
   // Chat
   const messages = await messageModel.find();
-  socket.emit('message', messages);
+  socket.emit('messageLogs', messages); // Emitir los mensajes al evento 'messageLogs' cuando un cliente se conecta
 
   socket.on('message', async (data) => {
     const newMessage = await messageModel.create({ ...data });
     if (newMessage) {
       const messages = await messageModel.find();
-      io.emit('messageLogs', messages);
+      io.emit('messageLogs', messages); // Emitir los mensajes actualizados a todos los clientes cuando se recibe un nuevo mensaje
     }
   });
 
