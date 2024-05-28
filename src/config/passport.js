@@ -1,6 +1,3 @@
-//No olvidar => Este código configura las estrategias de registro e inicio de sesión y maneja
-//cómo se serializan y deserializan los usuarios en la sesión
-
 import passport from 'passport';
 import local from 'passport-local';
 import GitHubStrategy from 'passport-github2';
@@ -40,7 +37,7 @@ export const initializaPassport = () => {
     )
   );
 
-  passport.use('login',new LocalStrategy(
+  passport.use('login', new LocalStrategy(
       { usernameField: 'email' },
       async (username, password, done) => {
         try {
@@ -80,7 +77,7 @@ export const initializaPassport = () => {
     }
   });
 
-  passport.use('github', new GitHubStrategy(
+  passport.use(new GitHubStrategy(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
@@ -88,7 +85,7 @@ export const initializaPassport = () => {
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-        console.log({profile});
+        console.log({ profile });
         const email = profile._json.email;
         const user = await getUserEmail(email);
 
@@ -103,7 +100,7 @@ export const initializaPassport = () => {
             github: true
         };
 
-        const result = await registerUser({...newUser});
+        const result = await registerUser({ ...newUser });
         return done(null, result);
 
       } catch (error) {

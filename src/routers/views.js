@@ -28,7 +28,8 @@ router.get('/logout', logout);
 router.post('/register', passport.authenticate('register', { failureRedirect: '/register' }), registerPost);
 router.post('/login', passport.authenticate('login', { failureRedirect: '/login' }), login);
 
-router.get('/github', passport.authenticate({ scope: ['user:email']}), async(req, res) => {});
-router.get('/login-github-callback', passport.authenticate('github', {failureRedirect:'/register'}), login);
+router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
+router.get('/login-github-callback', passport.authenticate('github', { failureRedirect: '/register' }), login);
 
 export default router;
+
