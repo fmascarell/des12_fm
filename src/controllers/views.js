@@ -95,8 +95,8 @@ export const login = async (req = request, res = response) => {
     lastName: req.user.lastName,
     email: req.user.email,
     rol: req.user.rol,
+    image: req.user.image,
   };
-
   return res.redirect('/');
 };
 
