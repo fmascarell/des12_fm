@@ -17,8 +17,6 @@ import { initializaPassport } from "./config/passport.js";
 const app = express();
 const PORT = process.env.PORT;
 
-console.log("dirname en app.js: ", __dirname); 
-
 // Configuración de middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
