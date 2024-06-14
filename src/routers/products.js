@@ -1,10 +1,11 @@
 import { Router } from 'express';
+import { uploader } from '../config/multer.js';
 import { addProduct, deleteProduct, getProduct, getProductById, updateProduct } from '../controllers/products.js';
 const router = Router();
 
 router.get('/', getProduct);
 router.get('/:pid', getProductById);
-router.post('/', addProduct);
+router.post('/', uploader.single('file') , addProduct);
 router.put('/:pid', updateProduct);
 router.delete('/:pid', deleteProduct);
 

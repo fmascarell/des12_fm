@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export const dbConnection = async () => {
     try {
-        const uri = process.env.URI_MONGODB;
+        const uri = `${process.env.URI_MONGODB}/${process.env.DB_MONGODB}`;
         await mongoose.connect(uri);
         console.log('Se ha conectado a la Base de datos online');
     } catch (error) {

@@ -9,6 +9,10 @@ export const homeView = async (req = request, res = response) => {
     const user = req.session.user;
 
     console.log('Renderizando vista home con usuario:', user);
+       // Verifica los parámetros de la ruta
+    console.log('Parámetros de la ruta:', req.params);
+       // Verifica los datos del cuerpo
+    console.log('Datos del cuerpo:', req.body);
 
     return res.render('home', {
       productos: payload,
@@ -16,6 +20,7 @@ export const homeView = async (req = request, res = response) => {
       title: 'Home',
       user,
     });
+    
   } catch (error) {
     console.error('Error al renderizar la vista home:', error);
     return res.status(500).send('Error interno del servidor');

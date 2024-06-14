@@ -5,18 +5,19 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import 'dotenv/config';
-
+import __dirname from './dirname.js';
 import products from './routers/products.js';
 import carts from './routers/carts.js';
 import views from './routers/views.js';
-import __dirname from "./utils.js";
-import { dbConnection } from "./database/config.js";
+import { dbConnection } from "./config/config.js";
 import { messageModel } from "./dao/models/messages.js";
 import { addProductService, getProductService } from "./services/products.js";
 import { initializaPassport } from "./config/passport.js";
 
 const app = express();
 const PORT = process.env.PORT;
+
+console.log("dirname en app.js: ", __dirname); 
 
 // Configuración de middleware
 app.use(express.json());
@@ -26,7 +27,7 @@ app.use(express.static(__dirname + '/public'));
 // Configuración de sesión
 app.use(session({
   store: MongoStore.create({
-    mongoUrl: process.env.URI_MONGODB,
+    mongoUrl: `${process.env.URI_MONGODB}/${process.env.DB_MONGODB}`,
     ttl: 3600
   }),
   secret: process.env.SECRET_SESSION,
