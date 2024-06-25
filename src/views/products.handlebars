@@ -3,6 +3,8 @@
 <div>
     <h3>Lista de productos: </h3>
 
+    <a href="/add-product" class="btn btn-primary">Agregar producto</a>
+
     <table>
         <thead>
             <tr>
@@ -34,8 +36,8 @@
                     {{/if}}
                 </td>
                 <td>
-                    {{#if this.thumbnails.length}}
-                    <a href="{{this.thumbnails.[0]}}" target="_blank">{{this.thumbnails.[0]}}</a>
+                    {{#if this.thumbnail}}
+                    <a href="{{this.thumbnail}}" target="_blank">Imagen</a>
                     {{else}}
                     Imagen no disponible
                     {{/if}}

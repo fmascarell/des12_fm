@@ -67,10 +67,10 @@ export const getProductByCodeService = async (code) => {
     }
 }
 
-export const addProductService = async ({title, description, price, thumbnail, code, stock, category, status}) => {
+export const addProductService = async (body) => {
     try{
-        console.log({ title, description, price, thumbnail, code, stock, category, status }); // Verifica los datos recibidos
-        return await productModel.create({title, description, price, thumbnail, code, stock, category, status});
+        console.log({ body }); // Verifica los datos recibidos
+        return await productModel.create({...body});
     }
     catch(error){
         console.log('addProductService -> ', error);

@@ -36,12 +36,6 @@ export const addProduct = async (req = request, res = response) => {
   try {
     const { title, description, price, code, stock, category } = req.body;
     
-    // Verifica los parámetros de la ruta
-    console.log('Parámetros de la ruta:', req.params);
-  
-    // Verifica los datos del cuerpo
-    console.log('Datos del cuerpo:', req.body);
-  
     // Verifica el archivo subido
     console.log('Archivo subido:', req.file); 
   
@@ -72,6 +66,24 @@ export const updateProduct = async (req = request, res = response) => {
   try {
     const { pid } = req.params;
     const { _id, ...rest } = req.body;
+
+    const product = await getProductByIdService(pid);
+
+    if (!product)
+      return res.status(400).json({ msg: `El producto con id ${pid} no existe` });
+
+    if (req.file){
+      if(product.thumbnail){
+        const url = product.thumbnail.split('/');
+        const nombre = url[url.length -1];
+        const [id] = nombre.split('.');
+        cloudinary.uploader.destroy(id);
+      }
+
+      const result = await cloudinary.uploader.upload(req.file.path);
+      rest.thumbnail = result.secure_url; // Añade la URL de la imagen al cuerpo de la solicitud
+    }
+  
     const producto = await updateProductService(pid, rest);
     if (producto) return res.json({ msg: "Producto actualizado", producto });
     return res.status(404).json({ msg: `No se ha podido actualizar el producto id ${pid}` });
