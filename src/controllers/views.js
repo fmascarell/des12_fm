@@ -1,6 +1,8 @@
 import { request, response } from 'express';
-import { getProductService } from '../services/products.js';
+import { addProductService, getProductByCodeService, getProductService } from '../services/products.js';
 import { getCartByIdService } from '../services/carts.js';
+import { cloudinary } from '../config/cloudinary.js';
+import { validFileExtension } from '../utils/validFileExtension.js';
 
 export const homeView = async (req = request, res = response) => {
   try {
@@ -72,6 +74,39 @@ export const productsView = async (req = request, res = response) => {
     return res.status(500).send('Error interno del servidor');
   }
 };
+
+export const addProductView = async (req = request, res = response) =>{
+  const user = req.session.user;
+  return res.render('addProduct', { title: 'Agregar producto', user });
+}
+
+export const addProductViewPost = async (req = request, res = response) =>{
+  const { title, description, price, code, stock, category } = req.body;
+  console.log('Archivo subido:', req.file); 
+
+  if (!title || !description || !code || !price || !stock || !category)
+    return res.status(404).json({ msg: "Los campos [title, description, price, code, stock, category] son obligatorios" });
+
+  const existeCode = await getProductByCodeService(code);
+  console.log('Código:', code);
+  
+  if (existeCode)
+    return res.status(400).json({ msg: "El código ingresado ya existe" });
+
+  if (req.file) {
+    const isValidExtension = validFileExtension(req.file.originalname);
+
+    if (!isValidExtension)
+      return res.status(400).json({ msg:"La extensión del archivo no es válida, utilice formato de imagen" });
+
+    const result = await cloudinary.uploader.upload(req.file.path);
+    console.log('URL de la imagen subida:', result.secure_url);
+    req.body.thumbnail = result.secure_url; // Añade la URL de la imagen al cuerpo de la solicitud
+  }
+
+  await addProductService({ ...req.body });
+  return res.redirect('/products');
+}
 
 export const cartView = async (req = request, res = response) => {
   try {

@@ -8,6 +8,7 @@ import {
   getProductService,
   updateProductService,
 } from "../services/products.js";
+import { validFileExtension } from "../utils/validFileExtension.js";
 
 export const getProduct = async (req = request, res = response) => {
   try {
@@ -49,6 +50,11 @@ export const addProduct = async (req = request, res = response) => {
       return res.status(400).json({ msg: "El código ingresado ya existe" });
   
     if (req.file) {
+      const isValidExtension = validFileExtension(req.file.originalname);
+
+      if (!isValidExtension)
+        return res.status(400).json({ msg:"La extensión del archivo no es válida, utilice formato de imagen" });
+
       const result = await cloudinary.uploader.upload(req.file.path);
       console.log('URL de la imagen subida:', result.secure_url);
       req.body.thumbnail = result.secure_url; // Añade la URL de la imagen al cuerpo de la solicitud
@@ -73,6 +79,11 @@ export const updateProduct = async (req = request, res = response) => {
       return res.status(400).json({ msg: `El producto con id ${pid} no existe` });
 
     if (req.file){
+      const isValidExtension = validFileExtension(req.file.originalname);
+
+      if (!isValidExtension)
+        return res.status(400).json({ msg:"La extensión del archivo no es válida, utilice formato de imagen" });
+
       if(product.thumbnail){
         const url = product.thumbnail.split('/');
         const nombre = url[url.length -1];

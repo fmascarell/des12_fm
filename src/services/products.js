@@ -1,6 +1,6 @@
 import { productModel } from "../dao/models/products.js";
 
-export const getProductService = async ({limit = 2, page = 1, sort, query}) => {
+export const getProductService = async ({limit = 10, page = 1, sort, query}) => {
     try{
         page = page == 0 ? 1 : page;
         page = Number(page);

@@ -53,17 +53,17 @@
     </table>
 
     <div class="pagination">
-        <span>Límite por página: {{result.limit}}</span><br>
+        <span>Límite por página: {{result.limit}}</span><br><br>
 
         {{#if result.query}}
-        <span>Filtrado por: {{result.query}}</span><br>
+        <span>Filtrado por: {{result.query}}</span><br><br>
         {{/if}}
 
         {{#if result.hasPrevPage}}
-        <a href="?page={{result.prevPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">Página anterior</a>
+        <a href="?page={{result.prevPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">Página anterior</a><br>
         {{/if}}
 
-        <span>Página {{result.page}} de {{result.totalPages}}</span>
+        <span>Página {{result.page}} de {{result.totalPages}}</span><br><br>
 
         {{#if result.hasNextPage}}
         <a href="?page={{result.nextPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">Página siguiente</a>
