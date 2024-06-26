@@ -6,3 +6,7 @@
 4. Ejecutar en modo desarrollo ```npm run dev```
 5. Ejecutar en modo productivo ```npm start```
 6. Ejecutar ```npm i express-session connect-mongo``` para login
+
+### Para subir imagenes con cloudinary, crear cuenta en cloudinary y agregar credenciales en archivo .env
+
+7. Ejecutar en modo desarrollo ```npm install cloudinary multer multer-storage-cloudinary dotenv```
