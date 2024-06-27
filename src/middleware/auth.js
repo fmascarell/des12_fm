@@ -9,7 +9,7 @@ export const auth = (req = request, res = response, next) => {
 
 // Middleware de autorización para administradores
 export const admin = (req = request, res = response, next) => {
-  if (req.session?.rol === 'admin') return next();
+  if (req.session?.user.rol === 'admin') return next();
 
   return res.redirect('/');
 };

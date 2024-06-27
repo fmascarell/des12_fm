@@ -12,6 +12,10 @@ const userSchema = new Schema({
     fechaCreacion: { type: Date, default: Date.now },
     image: { type: String },
     github: { type: Boolean, default: false },
+    cart_id:{
+        type:Schema.Types.ObjectId,
+        ref:'Cart'
+    }
 });
 
 userSchema.set('toJSON', {
