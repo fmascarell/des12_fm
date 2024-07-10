@@ -1,5 +1,5 @@
 import { request, response } from "express";
-import { CartsRepository } from "../repositories/index.js";
+import { CartsRepository, UsersRepository } from "../repositories/index.js";
 
 export const getCartById = async (req = request, res = response) => {
   try {
@@ -17,23 +17,35 @@ export const getCartById = async (req = request, res = response) => {
   }
 };
 
-export const setCart = async (req = request, res = response) => {
-  try {
-    const carrito = await CartsRepository.setCart();
-    return res.json({ msg: "Se creo el carrito", carrito });
-  } catch (error) {
-    console.log("setCart -> ", error);
-    return res
-      .status(500)
-      .json({
-        msg: "Se ha producido un error, comuniquese con su administrador",
-      });
-  }
-};
+//export const setCart = async (req = request, res = response) => {
+//  try {
+//    const carrito = await CartsRepository.setCart();
+//    return res.json({ msg: "Se creo el carrito", carrito });
+//  } catch (error) {
+//    console.log("setCart -> ", error);
+//    return res
+//      .status(500)
+//      .json({
+//        msg: "Se ha producido un error, comuniquese con su administrador",
+//      });
+//  }
+//};
 
 export const addProductInCart = async (req = request, res = response) => {
   try {
-    const { cid, pid } = req.params;
+    const { cid, pid, _id } = req.params;
+
+    const usuario = await UsersRepository.getUserById(_id);
+
+    if(!usuario) return res.status(400).json({ok: false, msg: 'Usuario no existe!'});
+
+    console.log({ usuario });
+    console.log({ cid });
+
+    if(usuario.cart_id === cid){
+        console.log('Son iguales');
+    }
+
     const carrito = await CartsRepository.addProductInCart(cid, pid);
 
     if (!carrito)
