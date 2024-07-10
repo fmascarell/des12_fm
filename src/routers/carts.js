@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {
   addProductInCart,
-  deleteCart,
+  //deleteCart,
   deleteProductsInCart,
   getCartById,
   //setCart,
@@ -16,7 +16,7 @@ router.get("/:cid", validarJWT, getCartById);
 router.post("/:cid/product/:pid", validarJWT, addProductInCart);
 router.delete("/:cid/products/:pid", validarJWT, deleteProductsInCart);
 router.put("/:cid/products/:pid", validarJWT, updateProductsInCart);
-router.delete("/:cid", validarJWT, deleteCart);
+//router.delete("/:cid", validarJWT, deleteCart);
 
 //export default router;
 export { router as cartsRouter};
