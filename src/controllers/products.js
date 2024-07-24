@@ -33,15 +33,6 @@ export const addProduct = async (req = request, res = response) => {
     // Verifica el archivo subido
     console.log('Archivo subido:', req.file); 
   
-    if (!title || !description || !code || !price || !stock || !category)
-      return res.status(404).json({ msg: "Los campos [title, description, price, code, stock, category] son obligatorios" });
-  
-    const existeCode = await ProductsRepository.getProductByCode(code);
-    console.log('Código:', code);
-    
-    if (existeCode)
-      return res.status(400).json({ msg: "El código ingresado ya existe" });
-  
     if (req.file) {
       const isValidExtension = validFileExtension(req.file.originalname);
 

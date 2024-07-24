@@ -2,18 +2,12 @@ import { request, response } from "express";
 import { validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 
-// Middleware de autenticación
-export const auth = (req = request, res = response, next) => {
-  if (req.session?.user) return next();
-
-  return res.redirect('/login');
-};
-
 // Middleware de autorización para administradores
-export const admin = (req = request, res = response, next) => {
-  if (req.session?.user.rol === 'admin') return next();
+export const isAdmin = (req = request, res = response, next) => {
+  if (!(req.rol === 'admin')) 
+    return res.status(403).json({ ok: false, msg: 'Permisos insuficientes'});
 
-  return res.redirect('/');
+  next();
 };
 
 // Middleware de validación
@@ -32,9 +26,10 @@ export const validarJWT = (req=request, res=response, next) => {
     return res.status(401).json({ ok: false, msg: 'No hay token en la petición'});
 
   try {
-      const { _id, email } = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      const { _id, email, rol } = jwt.verify(token, process.env.JWT_SECRET_KEY);
       req._id = _id;
       req.email = email;
+      req.rol = rol;
   } catch (error) {
       console.log(error);
       return res.status(401).json({ ok: false, msg: 'Token no válido'});
