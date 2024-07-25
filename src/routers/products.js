@@ -17,7 +17,6 @@ router.get('/:pid', [
 
 router.post('/', [
     validarJWT,
-    isAdmin,
     check('title', 'El campo title es obligatorio').not().isEmpty(),
     check('description', 'El campo description es obligatorio').not().isEmpty(),
     check('code', 'El campo code es obligatorio').not().isEmpty(),
@@ -31,7 +30,6 @@ router.post('/', [
 
 router.put('/:pid', [
     validarJWT,
-    isAdmin,
     check('pid', 'No es valido el Id de producto').isMongoId(),
     check('pid').custom(existeProduct),
     validarCampos,

@@ -7,20 +7,18 @@ const userSchema = new Schema({
     lastName: { type: String },
     email: { type: String, required: [true, 'El correo es obligatorio'], unique: true },
     password: { type: String, required: [true, 'La contraseña es obligatoria']},
-    rol: { type: String, default: 'user', enum: ['user','admin']},
+    rol: { type: String, default: 'user', enum: ['user','admin', 'premium']},
     status: { type: Boolean, default: true },
     fechaCreacion: { type: Date, default: Date.now },
     image: { type: String },
     github: { type: Boolean, default: false },
-    cart_id:{
-        type:Schema.Types.ObjectId,
-        ref:'Cart'
-    }
+    cart_id: { type: Schema.Types.ObjectId, ref:'Cart' }
 });
 
 userSchema.set('toJSON', {
     transform: function (doc, ret) {
-        delete ret._v;
+        delete ret.__v;
+        delete ret.password; // No devolver la contraseña
         return ret;
     }
 });

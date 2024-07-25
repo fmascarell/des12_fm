@@ -33,6 +33,12 @@ router.get('/logout', logout);
 router.post('/register', passport.authenticate('register', { failureRedirect: '/register' }), registerPost);
 router.post('/login', passport.authenticate('login', { failureRedirect: '/login' }), login);
 
+// Ruta para mostrar la página de restablecimiento de contraseña
+router.get('/reset-password', auth, resetPasswordView);
+
+// Ruta para manejar el formulario de restablecimiento de contraseña
+router.post('/reset-password', auth, resetPasswordPost);
+
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
 router.get('/login-github-callback', passport.authenticate('github', { failureRedirect: '/register' }), login);
 

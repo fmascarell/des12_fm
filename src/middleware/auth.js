@@ -10,16 +10,23 @@ export const isAdmin = (req = request, res = response, next) => {
   next();
 };
 
+// Middleware de autorización para usuarios premium
+export const isPremium = (req = request, res = response, next) => {
+  if (!(req.rol === 'premium')) 
+    return res.status(403).json({ ok: false, msg: 'Permisos insuficientes'});
+
+  next();
+};
+
 // Middleware de validación
 export const validarCampos = (req=request, res=response, next) => {
   const errores = validationResult(req);
 
   if (!errores.isEmpty()) return res.status(400).json(errores);
   next();
-}
+};
 
 export const validarJWT = (req=request, res=response, next) => {
-  //const token = req.header('Authorization')?.replace('Bearer ','');
   const token = req.header('x-token');
 
   if(!token)
@@ -36,4 +43,4 @@ export const validarJWT = (req=request, res=response, next) => {
   }
 
   next();
-}
+};
